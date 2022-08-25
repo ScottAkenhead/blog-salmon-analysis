@@ -1,0 +1,23 @@
+---
+title: "Context! What's Happening?"
+author: "Scott Akenhead"
+date: "2022-08-22"
+categories: [news]
+image: "image.jpg"
+---
+
+This is a post with executable code.
+
+```{r}
+x <- 1 + 1
+cat('x =', x, '\n')
+```
+
+[![This is the caption to the figure. The figure is a link.](image.jpg){fig-alt="it was image.jpg"}](https://quarto.org/docs/websites/website-blog.html)
+
+I put a pencil in my hair.\
+It fell to earth I know not where.\
+I put a pencil, yea, chest high,\
+I haven't see it since July. \
+I ask you, what do you think of that? \
+I guess it proves I'm bald and fat.

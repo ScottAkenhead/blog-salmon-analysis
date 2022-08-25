@@ -1,0 +1,6 @@
+"0","#| label: fig-raw"
+"0","#| fig-cap: ""Salmon counts as read from Parken _et al._ (2003) by day with all years combined."""
+"0",""
+"0","SetPar()"
+"0","plot(dat$day, 0.001*dat$count, xlim=c(0,36),ylim=c(0,12),yaxs=""i"","
+"0","     xlab='Day from 31 October', ylab=""Salmon Count ('000)"")"

@@ -1,0 +1,14 @@
+{
+  "hash": "a3ce43ffd11a9bfa87ecbc9ff6804403",
+  "result": {
+    "markdown": "---\ntitle: \"Context! What's Happening?\"\nauthor: \"Scott Akenhead\"\ndate: \"2022-08-22\"\ncategories: [news]\nimage: \"image.jpg\"\n---\n\n\nThis is a post with executable code.\n\n\n::: {.cell}\n\n```{.r .cell-code}\nx <- 1 + 1\ncat('x =', x, '\\n')\n```\n\n::: {.cell-output .cell-output-stdout}\n```\nx = 2 \n```\n:::\n:::\n\n\n[![This is the caption to the figure. The figure is a link.](image.jpg){fig-alt=\"it was image.jpg\"}](https://quarto.org/docs/websites/website-blog.html)\n\nI put a pencil in my hair.\\\nIt fell to earth I know not where.\\\nI put a pencil, yea, chest high,\\\nI haven't see it since July. \\\nI ask you, what do you think of that? \\\nI guess it proves I'm bald and fat.\n",
+    "supporting": [],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

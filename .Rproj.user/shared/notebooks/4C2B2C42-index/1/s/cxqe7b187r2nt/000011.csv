@@ -1,0 +1,8 @@
+"0","# r^2 for overall fit"
+"0","SSQ <- sum( (dat[,3] - mean(xa[,2]))^2 ) # SSQ from mean (dumb)"
+"0","r2  <-  1- Gfit$value / SSQ"
+"0","print(paste(' r^2 =', round (r2,2) ))"
+"1","[1]"
+"1"," "" r^2 = 0.99"""
+"1","
+"

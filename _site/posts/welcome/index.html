@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.0.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Scott Akenhead">
+<meta name="dcterms.date" content="2022-08-22">
+
+<title>Adventures With Salmon Statistics and Models - Spawner Surveys: Not Year By Year.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+<script src="../../site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="../../site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Adventures With Salmon Statistics and Models</span>
+  </a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html">About</a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Spawner Surveys: Not Year By Year.</h1>
+                                <div class="quarto-categories">
+                <div class="quarto-category">analysis</div>
+                <div class="quarto-category">spawner</div>
+                <div class="quarto-category">survey</div>
+                <div class="quarto-category">multi-level</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Scott Akenhead </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">August 22, 2022</p>
+      </div>
+    </div>
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+<p>My first post via <a href="https://quarto.org/docs/websites/website-blog.html" title="link:">Quarto blog</a>, please forebear.</p>
+<p><img src="thumbnail.jpg" class="img-fluid"></p>
+<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>This blog describes a simplistic examination of surveys that estimate the number of salmon spawners in a river. Several surveys are conducted each year (methods irrelevant here). Two goals</p>
+<ol type="1">
+<li><p>Convince biologists that analyzing all of the data at once is better than one year at a time. So we will be looking for an overall pattern of salmon, a shape, and extracting a <em>years effect</em> on that pattern – which will include yearly abundance of salmon, the goal of the surveys.</p></li>
+<li><p>Compare the results of conventional year-by-year approach to the result from years-together.</p></li>
+</ol>
+<p>The analysis is deliberately simple, with more sophisticated approaches planned for subsequent blogs.</p>
+<section id="area-under-the-curve-auc" class="level2">
+<h2 class="anchored" data-anchor-id="area-under-the-curve-auc">Area Under the Curve (AUC)</h2>
+<p>Convention determines salmon spawner abundance by linear interpolation between survey estimates each year separately, with assumptions about timing for zero abundance before and after the surveys: a <strong>trapezoid</strong> <span class="citation" data-cites="parken2003">(<a href="#ref-parken2003" role="doc-biblioref">Parken, Bailey, and Irvine 2003</a>)</span>. There is an alternative, where all years are combined to</p>
+<ol type="a">
+<li>determine the general temporal pattern of spawner abundance (“<em>salmon days</em>), perhaps Gaussian if early arrivals and late survivors viewed as simply rare, perhaps Beta if ordained zero.</li>
+<li>given (a), estimate the change to that shape for each year, perhaps skewed to be earlier or later than the pattern across all years,</li>
+<li>given (a) and (b), determine the total abundance for each year, and</li>
+<li>from (a), (b), and (c), determine the observation error for individual surveys, <span class="math inline">\(\sigma_{obs},\)</span> perhaps as a fixed percentage error (<span class="math inline">\(\sigma_{obs}=20\%\)</span> of true abundance, implying a log transform) rather than an absolute error (<span class="math inline">\(\sigma_{obs} = 20\)</span> spawners).</li>
+</ol>
+</section>
+</section>
+<section id="example" class="level1">
+<h1>Example</h1>
+<section id="test-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="test-dataset">Test Dataset</h2>
+<p>As test data, the abundance estimates for 21 surveys over 4 years from Parken <em>et al.</em> 2003 (<a href="#fig-Parken">Figure&nbsp;1</a>). The numbers are reproduced only approximately (<a href="#tbl-raw">Table&nbsp;1</a>), and plotted in <a href="#fig-raw">Figure&nbsp;2</a> with the observations from all years combined.</p>
+<div id="fig-Parken" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="AUC%20Fig%202%20Parken%20Bailey%20Irvine%202003.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Figure 1: Plot of trapezoids from salmon spawner surveys from Parken et al (2003).</figcaption><p></p>
+</figure>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    <span class="at">year=</span><span class="fu">c</span>(<span class="fu">rep</span>(<span class="dv">1996</span>,<span class="dv">5</span>),<span class="fu">rep</span>(<span class="dv">1997</span>,<span class="dv">5</span>),<span class="fu">rep</span>(<span class="dv">1998</span>,<span class="dv">6</span>),<span class="fu">rep</span>(<span class="dv">1999</span>,<span class="dv">5</span>)), </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">day=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">13</span>,<span class="dv">18</span>,<span class="dv">23</span>,  <span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">19</span>,  <span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">19</span>,<span class="dv">23</span>,  <span class="dv">5</span>,<span class="dv">9</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">19</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">count=</span><span class="fu">c</span>(<span class="dv">850</span>,<span class="dv">6000</span>,<span class="dv">11000</span>,<span class="dv">5000</span>,<span class="dv">1000</span>,  <span class="dv">500</span>,<span class="dv">2700</span>,<span class="dv">4000</span>,<span class="dv">4100</span>,<span class="dv">2500</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>            <span class="dv">15</span>,<span class="dv">40</span>,<span class="dv">200</span>,<span class="dv">500</span>,<span class="dv">700</span>,<span class="dv">600</span>,  <span class="dv">500</span>,<span class="dv">2500</span>,<span class="dv">4100</span>,<span class="dv">4000</span>,<span class="dv">1300</span>) )</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(dat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="tbl-raw" class="anchored">
+
+<table><caption>Table 1:  Salmon counts as read from Parken et al. (2003). </caption>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> year </th>
+   <th style="text-align:right;"> day </th>
+   <th style="text-align:right;"> count </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 850 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 6000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 11000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 18 </td>
+   <td style="text-align:right;"> 5000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 1000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 2700 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 4000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:right;"> 4100 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 2500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 15 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 40 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 200 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:right;"> 500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 700 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 23 </td>
+   <td style="text-align:right;"> 600 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> 2500 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 13 </td>
+   <td style="text-align:right;"> 4100 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 15 </td>
+   <td style="text-align:right;"> 4000 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 19 </td>
+   <td style="text-align:right;"> 1300 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">SetPar</span>()</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(dat<span class="sc">$</span>day, <span class="fl">0.001</span><span class="sc">*</span>dat<span class="sc">$</span>count, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">36</span>),<span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">12</span>),<span class="at">yaxs=</span><span class="st">"i"</span>,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Day from 31 October'</span>, <span class="at">ylab=</span><span class="st">"Salmon Count ('000)"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Axis34</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-raw" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-raw-1.png" class="img-fluid figure-img" width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 2: Salmon counts as read from Parken <em>et al.</em> (2003) by day with all years combined.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="scale-by-maximum-count" class="level3">
+<h3 class="anchored" data-anchor-id="scale-by-maximum-count">Scale by Maximum Count</h3>
+<p>First guess at shape is to scale observations by maximum each year, then fit a loess curve (<a href="#fig-scaled">Figure&nbsp;3</a>). It is necessary to sort the data by day for loess. Zeros were added outside the dates of observations, as per using a trapezoid.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>xa <span class="ot">&lt;-</span> <span class="fu">by</span>(dat<span class="sc">$</span>count,dat<span class="sc">$</span>year, max) <span class="co"># get maximums by year</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>xb <span class="ot">&lt;-</span> <span class="fu">by</span>(dat<span class="sc">$</span>count,dat<span class="sc">$</span>year, length) <span class="co"># number of observations by year</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># one value per year, copy for each obs in a year.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>xc <span class="ot">&lt;-</span> <span class="cn">NULL</span>  <span class="co"># temporary</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) xc <span class="ot">&lt;-</span> <span class="fu">c</span>(xc,<span class="fu">rep</span>( xa[[j]], xb[[j]]) )    </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>max <span class="ot">&lt;-</span> xc </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>scaled <span class="ot">&lt;-</span> dat<span class="sc">$</span>count <span class="sc">/</span> dat<span class="sc">$</span>max</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>xa <span class="ot">&lt;-</span> dat[<span class="fu">order</span>(dat<span class="sc">$</span>day), <span class="fu">c</span>(<span class="st">"day"</span>,<span class="st">"scaled"</span>)] <span class="co"># extract and sort</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> <span class="fu">loess</span>(scaled <span class="sc">~</span> day, <span class="at">data=</span>xa) <span class="co"># fit smoother to sorted data</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  range for resulting smooth line is range of observed days</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>days <span class="ot">=</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">23</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>loPred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lo, <span class="fu">data.frame</span>(<span class="at">day =</span> days) ) <span class="co"># all days in range</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>loPred <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">pred=</span>loPred,<span class="at">day=</span>days)      <span class="co"># not just observed day</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">SetPar</span>()</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scaled<span class="sc">~</span>day,<span class="at">data=</span>xa, <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">36</span>),</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Day from 31 October'</span>, <span class="at">ylab=</span><span class="st">'Scaled Count'</span>)</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(loPred<span class="sc">$</span>pred  <span class="sc">~</span> loPred<span class="sc">$</span>day ) </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="fu">Axis34</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scaled" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-scaled-1.png" class="img-fluid figure-img" width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 3: Salmon counts scaled (from 0 to 1) by the maximum count each year.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="shift-observations-by-day-of-maximum" class="level2">
+<h2 class="anchored" data-anchor-id="shift-observations-by-day-of-maximum">Shift Observations by Day of Maximum</h2>
+<p>One of the years has a large change in timing, adding scatter to the preceding plot. We can reduce that scatter shifting (aligning) observations according to date of maximum abundance within years (<a href="#fig-shifted">Figure&nbsp;4</a>). This is inaccurate (a hueristic) but demonstrates a parameter (timing) that will be estimated better subsequently. The variable <em>shift</em> is the shifted value for day of observation, with negative values and the peak will be at day <em>shift</em>. Apply the shift and plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>peak <span class="ot">&lt;-</span>dat<span class="sc">$</span>day[ <span class="fu">which</span>(dat<span class="sc">$</span>count <span class="sc">==</span> dat<span class="sc">$</span>max)] <span class="co"># peak day by year </span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>xa <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># temporary</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>) xa <span class="ot">&lt;-</span> <span class="fu">c</span>(xa,<span class="fu">rep</span>( peak[j], xb[[j]]) )    </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>shift <span class="ot">&lt;-</span> dat<span class="sc">$</span>day <span class="sc">-</span> xa </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xa <span class="ot">&lt;-</span> dat[<span class="fu">order</span>(dat<span class="sc">$</span>shift), <span class="fu">c</span>(<span class="st">"shift"</span>,<span class="st">"scaled"</span>)] <span class="co"># extract and sort</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># add zeros outside range of obs.</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>xa0 <span class="ot">&lt;-</span> <span class="fu">rbind</span> (<span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>,<span class="dv">0</span>), xa, <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">0</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>lo <span class="ot">&lt;-</span> <span class="fu">loess</span>(scaled <span class="sc">~</span> shift, <span class="at">data=</span>xa0) <span class="co"># smoother #,span=0.5)</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>loPred <span class="ot">&lt;-</span> <span class="fu">predict</span>(lo, <span class="fu">data.frame</span>(<span class="at">shift=</span> <span class="sc">-</span><span class="dv">15</span><span class="sc">:</span><span class="dv">15</span>) )</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>loPred <span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">pred=</span>loPred,<span class="at">shift=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span><span class="sc">:</span><span class="dv">15</span>))</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co"># redo preceding plot</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">SetPar</span>()</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scaled<span class="sc">~</span>shift,<span class="at">data=</span>xa0, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">18</span>,<span class="dv">18</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>), <span class="at">yaxs=</span><span class="st">"i"</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Day from Year Peak'</span>, <span class="at">ylab=</span><span class="st">'Scaled Count'</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(pred <span class="sc">~</span>shift, <span class="at">data =</span> loPred ) <span class="co"># </span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="fu">Axis34</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-shifted" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-shifted-1.png" class="img-fluid figure-img" width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 4: Salmon counts shifted and scaled (from 0 to 1) by the maximum count, and the corresponding day, within each year.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="assume-gaussian" class="level2">
+<h2 class="anchored" data-anchor-id="assume-gaussian">Assume Gaussian</h2>
+<p><a href="#fig-shifted">Figure&nbsp;4</a> suggests a symmetric Gaussian (“normal”) probability density distribution (PDD):</p>
+<p><span class="math display">\[ \textbf{G}(x) = (2\pi \sigma)^{-1/2} ~ e^{ -(x-\mu)^2 /2\sigma ^2} \]</span></p>
+<p>with <span class="math inline">\(\mu \approx 0 \text{ and } \sigma \approx 5\)</span> days as noticed from crude scaling of abundance and shifting of time for each year.</p>
+<p>As well as the parameters <span class="math inline">\(\mu\)</span> &nbsp;and&nbsp;<span class="math inline">\(\sigma,\)</span> additional parameter <span class="math inline">\(\eta\)</span> is required for total abundance, the integral of the PDD and proportional to maximum abundance.</p>
+<p>The integral of the Gauss-Laplace function <span class="math display">\[\int{e^{-x^2}} = (2\pi)^{1/2} \approx 2.5\]</span> For a PDD, the integral must be 1, and this is effected by the term <span class="math inline">\((2\pi \sigma )^{-1/2} \approx 0.4.\)</span> This is the maximum of the Gaussian PDD at <span class="math inline">\(\mu = 0\)</span> when <span class="math inline">\(\sigma = 1.\)</span> If the abundance <span class="math inline">\(\eta= 1/0.3989422804 = 2.505528\)</span> then the maximum for the curve is 1 and the integral <span class="math inline">\(\approx 2.5.\)</span> Similarly, when <span class="math inline">\(\sigma = 2\)</span> the maximum is 1 when <span class="math inline">\(\eta= 2/0.4 = 5\)</span> and for <span class="math inline">\(\sigma = 5, ~ \eta=12.5\)</span></p>
+<p>In the scaled and shifted data the maximum was assigned to be 1 and it was observed that <span class="math inline">\(\sigma \approx 5.\)</span> Fitting a Gaussian distribution with 3 parameters <span class="math inline">\((\eta,\mu,\sigma)\)</span> to all years combined, and after the rough scaling and shifting, is accomplished by the following chunk.</p>
+<p>This chunk is a non-linear fit, obtained by searching for the parameters that have the lowest SSQ, the lowest sum of squared differences between observed and predicted (fitted) values. A function <em>Gssq()</em> is defined for this; it uses the built-in function stats::dnorm (normal probability density) to predict <span class="math inline">\(\hat{y}\)</span> for each observed day, given trial estimates for <span class="math inline">\(\mu,~ \sigma,~ \eta\)</span> and determines the SSQ. Then <em>Gssq()</em> is a parameter for the built-in function stats::optim that searches for value of the parameters that minimize SSQ. The other parameters for <em>optim()</em> are (1) a starting guess at parameters, and (2) the observed data: 21 values of <em>day</em> and <em>abundance</em>.</p>
+<p>Fitting is by searching for the set of parameters that minimizes the sum of squared differnces (SSQ) between predicted <span class="math inline">\(\hat{y}\)</span> and observed <span class="math inline">\(y\)</span>, <span class="math display">\[ SSQ = \sum{(y - \hat{y})^2}\]</span></p>
+<p>Given the SSQ at best fit, we can determine how well the data is fitted by a Gaussian, <span class="math inline">\(\hat{y},\)</span> compared to fitting the mean abundance over all days, <span class="math inline">\(\bar{y},\)</span> a default model, by determining the reduction in SSQ: <span class="math display">\[ r^2 = 1- \frac{\sum (y-\hat{y})^2}{\sum (y-\bar{y})^2 }.\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Gssq <span class="ot">&lt;-</span> <span class="cf">function</span>(par, xy){</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> xy[,<span class="dv">1</span>]; y<span class="ot">&lt;-</span>  xy[,<span class="dv">2</span>];</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> par[<span class="dv">1</span>]; mu <span class="ot">&lt;-</span> par[<span class="dv">2</span>]; sigma <span class="ot">&lt;-</span> par[<span class="dv">3</span>];</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ybar <span class="ot">&lt;-</span> eta <span class="sc">*</span> <span class="fu">dnorm</span>(x,mu,sigma)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (y<span class="sc">-</span>ybar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ssq)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(<span class="fl">12.5</span>, <span class="dv">0</span>, <span class="dv">5</span>), Gssq, <span class="at">xy=</span>xa )</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; pr <span class="ot">=</span> <span class="fu">round</span>(par,<span class="dv">2</span>)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (xa[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co"># sum of y minus y-hat, squared</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">round</span> (<span class="dv">1</span><span class="sc">-</span> Gfit<span class="sc">$</span>value<span class="sc">/</span>SSQ, <span class="dv">2</span>) <span class="co"># Gfit$value is SSQ fitted. </span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'r^2 = '</span>, r2, <span class="st">', eta = '</span>,pr[<span class="dv">1</span>], <span class="st">', mu = '</span>,pr[<span class="dv">2</span>],</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">', sigma = '</span>, pr[<span class="dv">3</span>], <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>r<span class="sc">^</span><span class="dv">2</span> <span class="ot">=</span> <span class="fl">0.94</span>, eta <span class="ot">=</span> <span class="fl">11.02</span>, mu <span class="ot">=</span> <span class="fl">0.05</span>, sigma <span class="ot">=</span> <span class="fl">4.29</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The result provides <span class="math inline">\(\sigma \approx 4.3\)</span> which is a more narrow spread than noticing the inflection point in the Gaussian, at <span class="math inline">\((1 ~\sigma),\)</span> was about <span class="math inline">\(\pm5\)</span> from the mean. The fitted maximum will necessarily be close to 1 because of our scaling, but in this case greater than 1, given <span class="math inline">\(\sigma / 0.4 = 10.72\)</span> but <span class="math inline">\(\eta = 11.2,\)</span> due to our rough scaling.</p>
+<p>The fitted line is compared visually to the data by the following chunk. A smooth Gaussian curve is plotted by estimating a value for 18 days before and after the mean day.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">18</span><span class="sc">:</span><span class="dv">18</span>) <span class="co"># 37 points for a smooth(er) line.</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>pred <span class="ot">&lt;-</span> par[<span class="dv">1</span>] <span class="sc">*</span> <span class="fu">dnorm</span>(x, par[<span class="dv">2</span>],par[<span class="dv">3</span>]) <span class="co"># eta, mu, sigma</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">SetPar</span>()</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(scaled<span class="sc">~</span>shift,<span class="at">data=</span>xa, <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">18</span>,<span class="dv">18</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.2</span>),<span class="at">yaxs=</span><span class="st">"i"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Day from Annual Peak'</span>, <span class="at">ylab=</span><span class="st">'Scaled Count'</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lines</span>(pred <span class="sc">~</span> x)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">Axis34</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-norm" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-norm-1.png" class="img-fluid figure-img" width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 5: Gaussian probability density fitted to the scaled and shifted counts.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="year-effects" class="level2">
+<h2 class="anchored" data-anchor-id="year-effects">Year Effects</h2>
+<p>The preceding identified the overall pattern as Gaussian with <span class="math inline">\(\sigma \approx 4.3.\)</span> If <span class="math inline">\(\sigma\)</span> is assumed to be constant across years, as <a href="#fig-norm">Figure&nbsp;5</a> suggests, then only two observations per year are required to estimate total abundance: <span class="math inline">\(\eta_t,~ \mu_t.\)</span> To clarify: a single observation of early and small abundance cannot distinguish a small run with average timing from a big run that is late; one subsequent observation can (in theory).</p>
+<p>This test dataset has 5 or 6 observations per year, so precision is improved and over-fitting is reduced compared to (a) fitting 3 parameters to each year separately, or (b) interpolating a trapezoid that includes arbitrarily placed zeros.</p>
+<p>The next step estimates 8 parameters for year effects: <span class="math inline">\(\eta\)</span> (abundance) and <span class="math inline">\(\mu\)</span> (timing) for each of 4 years, and 1 estimate for <span class="math inline">\(\sigma\)</span> (spread) from 21 observations. The ratio of <span class="math inline">\(2.\bar{3}\)</span> data points to parameters might be improved by adding more years: 20 years @ 5 surveys/year would be <span class="math inline">\(11.\bar{1}.\)</span></p>
+<p><span class="math display">\[\hat{y}_{day, year} = \eta_{year} ~ \textbf{G}(x_{year},\mu_{year},\sigma)\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>GssqAll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, dat){</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dat columns: year, day, count</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># par is 9 parameters</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]; <span class="co"># abundance each year, length 4</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>]; <span class="co"># timing  each year, length 4</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="ot">&lt;-</span> par[<span class="dv">9</span>]; <span class="co"># spread every yearr, length 1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    years <span class="ot">=</span> <span class="fu">unique</span>(dat[,<span class="dv">1</span>]) <span class="co"># 1996 to 1999</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ybar <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(dat[,<span class="dv">1</span>])) <span class="co"># the predicted, length 21</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">=</span> <span class="dv">0</span>  <span class="co"># starting index for output vector ybar</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(years)) {  <span class="co"># 4 years: 1996 to 1999</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> years[j]) <span class="co"># find rows in dat for each year</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (i <span class="cf">in</span> k){ <span class="co"># each observed day in that year</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            m <span class="ot">&lt;-</span> m<span class="sc">+</span><span class="dv">1</span> <span class="co"># advance index for output</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            ybar[m]  <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[m,<span class="dv">2</span>],mu[j],sigma)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># predicted: abundance times normal(day, timing, spread)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>]<span class="sc">-</span>ybar)<span class="sc">^</span><span class="dv">2</span>) <span class="co"># result of trial values for par</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ssq)</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># par is total abundance 4 years:eta; timing 4 years: mu, and </span></span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># spread for all years: sigma. total 9 parameters.</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>par <span class="ot">&lt;-</span>  <span class="fu">numeric</span>(<span class="dv">9</span>)</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># starting guess for search is eta = 2 * sigma * max, mu = 15, sigma=4</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># max for each year is from observed counts.</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">11000</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">700</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#  result: 94600 35260  6020 35260</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#  start for yearly timing (mu) is day of observed maximum</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">19</span>,<span class="dv">15</span>)</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># start for spread, sigma, is from preceding fit.</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fl">4.3</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># the required precision of fit, reltol, is reduced from the default.</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(par, GssqAll, <span class="at">dat=</span>dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">control=</span><span class="fu">list</span>(<span class="at">reltol=</span><span class="fl">0.01</span>) )</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; <span class="co"># fitted parameters</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">=</span> <span class="fu">round</span>(par, <span class="dv">2</span>) <span class="co"># rounded for printing.</span></span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span> (<span class="at">Year=</span><span class="dv">1996</span><span class="sc">:</span><span class="dv">1999</span>,<span class="at">eta=</span>pr[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],<span class="at">mu=</span>pr[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">sigma=</span>pr[<span class="dv">9</span>])</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Year </th>
+   <th style="text-align:right;"> eta </th>
+   <th style="text-align:right;"> mu </th>
+   <th style="text-align:right;"> sigma </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 99332.56 </td>
+   <td style="text-align:right;"> 13.23 </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 39586.25 </td>
+   <td style="text-align:right;"> 13.62 </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 6020.14 </td>
+   <td style="text-align:right;"> 19.87 </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 35661.50 </td>
+   <td style="text-align:right;"> 13.31 </td>
+   <td style="text-align:right;"> 3.69 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r^2 for overall fit</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co"># SSQ from mean (dumb)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>r2  <span class="ot">&lt;-</span>  <span class="dv">1</span><span class="sc">-</span> Gfit<span class="sc">$</span>value <span class="sc">/</span> SSQ</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print(paste(' r^2 =', round (r2,2) ))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The resulting fit, with <span class="math inline">\(r^2 =\)</span> 0.99, minimizes SSQ over all years, despite large differences in abundance between years. Perhaps large abundances have a larger effect on the fit than small. To investigate, we determine the fit for each year as separate <span class="math inline">\(r^2\)</span> values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>eta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>];  mu <span class="ot">&lt;-</span> par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>]; sigma <span class="ot">&lt;-</span> par[<span class="dv">9</span>]; </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat[,<span class="dv">1</span>]) <span class="co"># 1996 to 1999</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>nyear <span class="ot">&lt;-</span> <span class="fu">length</span>(year)   <span class="co">#4 </span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># will be 21 predicted </span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    r2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nyear)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nyear) {</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> year[j]) <span class="co"># index for rows for this year</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        predicted <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[k,<span class="dv">2</span>], mu[j], sigma) <span class="co"># a vector</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># dat[,2] is day. dat[,3] is count</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        ssq_fit <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> predicted      )<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        ssq_raw <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(dat[k,<span class="dv">3</span>]) )<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        r2[j] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ssq_fit <span class="sc">/</span> ssq_raw</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        yhat <span class="ot">&lt;-</span> <span class="fu">c</span>(yhat, predicted) <span class="co"># accumulate and save predicted</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Year=</span>year, <span class="at">Abundance =</span>eta, <span class="at">r2=</span><span class="fu">round</span>(r2,<span class="dv">2</span>) )</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Year </th>
+   <th style="text-align:right;"> Abundance </th>
+   <th style="text-align:right;"> r2 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 99332.558 </td>
+   <td style="text-align:right;"> 0.99 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 39586.251 </td>
+   <td style="text-align:right;"> 0.80 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 6020.138 </td>
+   <td style="text-align:right;"> 0.80 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 35661.500 </td>
+   <td style="text-align:right;"> 0.93 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Compare the estimates of “fish days” from trapezoidal AUC and from fitting Gaussian distributions.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Year=</span>year, <span class="at">Abundance =</span> <span class="fu">round</span>(eta,<span class="dv">0</span>),</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">AUC =</span> <span class="fu">c</span>(<span class="dv">101211</span>, <span class="dv">56010</span>, <span class="dv">9847</span>,<span class="dv">45263</span>))</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>a[,<span class="st">"Difference(%)"</span>] <span class="ot">&lt;-</span> <span class="fu">round</span>( <span class="dv">100</span><span class="sc">*</span>(a<span class="sc">$</span>AUC<span class="sc">-</span>a<span class="sc">$</span>Abundance)<span class="sc">/</span>a<span class="sc">$</span>Abundance, <span class="dv">2</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:right;"> Year </th>
+   <th style="text-align:right;"> Abundance </th>
+   <th style="text-align:right;"> AUC </th>
+   <th style="text-align:right;"> Difference(%) </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1996 </td>
+   <td style="text-align:right;"> 99333 </td>
+   <td style="text-align:right;"> 101211 </td>
+   <td style="text-align:right;"> 1.89 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1997 </td>
+   <td style="text-align:right;"> 39586 </td>
+   <td style="text-align:right;"> 56010 </td>
+   <td style="text-align:right;"> 41.49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1998 </td>
+   <td style="text-align:right;"> 6020 </td>
+   <td style="text-align:right;"> 9847 </td>
+   <td style="text-align:right;"> 63.57 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1999 </td>
+   <td style="text-align:right;"> 35661 </td>
+   <td style="text-align:right;"> 45263 </td>
+   <td style="text-align:right;"> 26.93 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(a<span class="sc">$</span>Difference)),<span class="dv">0</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print( paste('The mean difference is ', a1, '%.',sep='' )) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The mean difference in annual estimates of <em>fish days</em> is 33%.’</p>
+<p>The four Gaussian distributions, and the observed and predicted counts, are plotted in <a href="#fig-years">Figure&nbsp;6</a> by the following chunk.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GssqAllPred &lt;- function(par, dat){</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     # same as GssqAll but returns the predictions. AND smooth curves.</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     eta &lt;- par[1:4];   mu &lt;- par[5:8]; sigma &lt;- par[9];</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     years &lt;-  unique(dat[,1]) # 1996 to 1999</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     nyears &lt;- length(years)</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     x &lt;- 1:30 # days for smooth</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     ybar &lt;- numeric(dim(dat)[1] ) # predicted for each day</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     smooth &lt;- NULL # predicted as smooth curve</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     m = 0 # row of output, total 21</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     for (j in 1:nyears) {  # 1 to 4, 1996 to 1999</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         k &lt;- which(dat[,1] == years[j]) # find rows in a for each year</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         for (i in k){ # each row in that year</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="co">#             m &lt;- m+1 # row of output</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co">#             ybar[m]  &lt;- eta[j] * dnorm(dat[m,2],mu[j],sigma)</span></span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="co">#         }</span></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="co">#         smooth &lt;- c(smooth, eta[j] * dnorm(x,mu[j],sigma)) </span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     a &lt;- list(ybar=ybar, smooth=smooth)</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(a)</span></span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">30</span>) <span class="co"># days of September</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="co"># yhat is predicted counts for the days observed</span></span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>ymax<span class="ot">=</span> <span class="fl">1.1e-3</span> <span class="sc">*</span> <span class="fu">max</span>(yhat)  <span class="co"># plot as thousands</span></span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a><span class="fu">SetPar</span>()</span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fl">1e-3</span><span class="sc">*</span>yhat <span class="sc">~</span> dat[,<span class="dv">2</span>], <span class="at">xlim=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">30</span>), <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, ymax), <span class="at">yaxs=</span><span class="st">"i"</span>,</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">'Day'</span>, <span class="at">ylab=</span><span class="st">"Salmon Counts ('000)"</span> )</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(<span class="fl">1e-3</span><span class="sc">*</span>dat[,<span class="dv">3</span>] <span class="sc">~</span> dat[,<span class="dv">2</span>], <span class="at">pch=</span><span class="dv">1</span>) <span class="co"># observed</span></span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>){</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a>    y  <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(x, mu[j], sigma) <span class="co"># smooth curve</span></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">lines</span>(<span class="fl">1e-3</span><span class="sc">*</span>y <span class="sc">~</span> x)</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="fu">Axis34</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-years" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="index_files/figure-html/fig-years-1.png" class="img-fluid figure-img" width="576"></p>
+<p></p><figcaption class="figure-caption">Figure 6: Four Gaussian curves with the same spread describe the observed salmon abundance. 5 or 6 observations in each year estimate just 2 parameters: abundance and timing.</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="discussion" class="level1">
+<h1>Discussion</h1>
+<p>The overall result of fitting Gaussians to four years of data simultaneously produced <span class="math inline">\(r^2=99\%\)</span> which seems excellent, but only superficially. At least we have</p>
+<ol type="1">
+<li><p>estimates of how well the data are fitted by the model;</p></li>
+<li><p>a better way to interpolate between observations, the continuous Gaussian; and</p></li>
+<li><p>removed the need for, and effect from, arbitrary estimates for timing of zero abundance.</p></li>
+</ol>
+<p>But there is a tendency for</p>
+<ol type="1">
+<li><p>larger abundances to have better fit (<span class="math inline">\(r^2\)</span> by year), suggesting that large observations have a bigger effect than small;</p></li>
+<li><p>and years with the largest difference between Gaussian and AUC have lower fit.</p></li>
+</ol>
+<p>The range of observations, from 15 to 11,000, suggests that the sampling error, the precision of observations, is proportional to the observation, as in <span class="math inline">\(\pm 20 \%,\)</span> as opposed to a fixed error, as in <span class="math inline">\(\sigma=20\)</span> <em>fish.</em> Ordinary linear regression assumes fixed error, and the non-linear fitting mimics that. Proportional sampling error, so the error is essentially a multiplier, implies the fit should be to log abundances, so that the log (error) is additive.</p>
+<section id="next-step" class="level2">
+<h2 class="anchored" data-anchor-id="next-step">Next Step</h2>
+<p>Saved for a subsequent post: Determine how to fit the log of the Gaussian to the log of the counts. I discovered a mathematical <strong>trick</strong> that makes this simple.</p>
+</section>
+<section id="down-the-road" class="level2">
+<h2 class="anchored" data-anchor-id="down-the-road">Down the Road</h2>
+<p>These regressions should be more rigorous, as Bayesian multi-level regression. And what about multiple rivers in the same area that are surveyed in the same years – can the model can be extended to river effects similar to year effects?</p>
+</section>
+</section>
+<section id="references" class="level1">
+
+
+
+
+</section>
+
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" role="doc-bibliography">
+<div id="ref-parken2003" class="csl-entry" role="doc-biblioentry">
+Parken, Charles K., Richard E. Bailey, and James R. Irvine. 2003. <span>“Incorporating Uncertainty into Area-Under-the-Curve and Peak Count Salmon Escapement Estimation.”</span> <em>North American Journal of Fisheries Management</em> 23 (1): 78–90. <a href="https://doi.org/10.1577/1548-8675(2003)023<0078:IUIAUT>2.0.CO;2">https://doi.org/10.1577/1548-8675(2003)023&lt;0078:IUIAUT&gt;2.0.CO;2</a>.
+</div>
+</div></section></div></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

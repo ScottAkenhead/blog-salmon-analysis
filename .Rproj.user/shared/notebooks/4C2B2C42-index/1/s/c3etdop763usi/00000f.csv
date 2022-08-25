@@ -1,0 +1,8 @@
+"0","#| label: fig-norm"
+"0","#| fig-cap: ""Gaussian probability density fitted to the scaled and shifted counts."""
+"0",""
+"0","x <- c(-18:18) # 37 points for a smooth(er) line."
+"0","pred <- par[1] * dnorm(x, par[2],par[3]) # eta, mu, sigma"
+"0","SetPar()"
+"0","plot(scaled~shift,data=xa, xlim=c(-18,18), ylim=c(0,1.2),yaxs=""i"","
+"0","     xlab='Day from Annual Peak', ylab='Scaled Count')"
