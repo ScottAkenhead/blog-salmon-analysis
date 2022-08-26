@@ -1,0 +1,2 @@
+"0","a1 <- round(mean(abs(a$PercentDiff)),0)"
+"0","#print( paste('The mean difference is ', a1, '%.',sep='' )) "

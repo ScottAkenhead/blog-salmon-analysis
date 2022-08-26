@@ -1,0 +1,1 @@
+"0","points(1e-3*dat[,3] ~ dat[,2], pch=1) # observed"

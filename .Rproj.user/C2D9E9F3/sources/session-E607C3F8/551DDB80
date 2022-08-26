@@ -1,0 +1,31 @@
+{
+    "id": "551DDB80",
+    "path": "~/Documents/Projects/blog salmon analysis/about.qmd",
+    "project_path": "about.qmd",
+    "type": "quarto_markdown",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1661557900847.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "rmdVisualMode": "true",
+        "rmdVisualWrapConfigured": "true",
+        "source_window_id": "",
+        "Source": "Source",
+        "docOutlineVisible": "1",
+        "rmdVisualCollapsedChunks": "",
+        "cursorPosition": "2,31",
+        "scrollLine": "0",
+        "rmdVisualModeLocation": "2:82"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1661470742,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1661470742,
+    "read_only": false,
+    "read_only_alternatives": []
+}

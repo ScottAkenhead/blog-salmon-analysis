@@ -164,12 +164,12 @@ div.csl-indent {
     <a class="nav-link" href="../../about.html">About</a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://github.com/"><i class="bi bi-github" role="img">
+    <a class="nav-link" href="https://github.com/ScottAkenhead/"><i class="bi bi-github" role="img">
 </i> 
  </a>
   </li>  
   <li class="nav-item compact">
-    <a class="nav-link" href="https://twitter.com"><i class="bi bi-twitter" role="img">
+    <a class="nav-link" href="https://twitter.com/scottakenhead"><i class="bi bi-twitter" role="img">
 </i> 
  </a>
   </li>  
@@ -223,9 +223,7 @@ div.csl-indent {
 
 
 
-<p>My first post via <a href="https://quarto.org/docs/websites/website-blog.html" title="link:">Quarto blog</a>, please forebear.</p>
-<p><img src="thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+<p>A simplistic examination of surveys that estimate the number of salmon spawners in a river.</p>
 <section id="introduction" class="level1">
 <h1>Introduction</h1>
 <p>This blog describes a simplistic examination of surveys that estimate the number of salmon spawners in a river. Several surveys are conducted each year (methods irrelevant here). Two goals</p>
@@ -471,25 +469,28 @@ div.csl-indent {
 <p>with <span class="math inline">\(\mu \approx 0 \text{ and } \sigma \approx 5\)</span> days as noticed from crude scaling of abundance and shifting of time for each year.</p>
 <p>As well as the parameters <span class="math inline">\(\mu\)</span> &nbsp;and&nbsp;<span class="math inline">\(\sigma,\)</span> additional parameter <span class="math inline">\(\eta\)</span> is required for total abundance, the integral of the PDD and proportional to maximum abundance.</p>
 <p>The integral of the Gauss-Laplace function <span class="math display">\[\int{e^{-x^2}} = (2\pi)^{1/2} \approx 2.5\]</span> For a PDD, the integral must be 1, and this is effected by the term <span class="math inline">\((2\pi \sigma )^{-1/2} \approx 0.4.\)</span> This is the maximum of the Gaussian PDD at <span class="math inline">\(\mu = 0\)</span> when <span class="math inline">\(\sigma = 1.\)</span> If the abundance <span class="math inline">\(\eta= 1/0.3989422804 = 2.505528\)</span> then the maximum for the curve is 1 and the integral <span class="math inline">\(\approx 2.5.\)</span> Similarly, when <span class="math inline">\(\sigma = 2\)</span> the maximum is 1 when <span class="math inline">\(\eta= 2/0.4 = 5\)</span> and for <span class="math inline">\(\sigma = 5, ~ \eta=12.5\)</span></p>
-<p>In the scaled and shifted data the maximum was assigned to be 1 and it was observed that <span class="math inline">\(\sigma \approx 5.\)</span> Fitting a Gaussian distribution with 3 parameters <span class="math inline">\((\eta,\mu,\sigma)\)</span> to all years combined, and after the rough scaling and shifting, is accomplished by the following chunk.</p>
+<p>In the scaled and shifted data the maximum was assigned to be 1 and it can be observed that <span class="math inline">\(\sigma \approx 5.\)</span> Fitting a Gaussian distribution with 3 parameters <span class="math inline">\((\eta,\mu,\sigma)\)</span> to all years combined, and after the rough scaling and shifting, is accomplished by the following chunk.</p>
 <p>This chunk is a non-linear fit, obtained by searching for the parameters that have the lowest SSQ, the lowest sum of squared differences between observed and predicted (fitted) values. A function <em>Gssq()</em> is defined for this; it uses the built-in function stats::dnorm (normal probability density) to predict <span class="math inline">\(\hat{y}\)</span> for each observed day, given trial estimates for <span class="math inline">\(\mu,~ \sigma,~ \eta\)</span> and determines the SSQ. Then <em>Gssq()</em> is a parameter for the built-in function stats::optim that searches for value of the parameters that minimize SSQ. The other parameters for <em>optim()</em> are (1) a starting guess at parameters, and (2) the observed data: 21 values of <em>day</em> and <em>abundance</em>.</p>
 <p>Fitting is by searching for the set of parameters that minimizes the sum of squared differnces (SSQ) between predicted <span class="math inline">\(\hat{y}\)</span> and observed <span class="math inline">\(y\)</span>, <span class="math display">\[ SSQ = \sum{(y - \hat{y})^2}\]</span></p>
 <p>Given the SSQ at best fit, we can determine how well the data is fitted by a Gaussian, <span class="math inline">\(\hat{y},\)</span> compared to fitting the mean abundance over all days, <span class="math inline">\(\bar{y},\)</span> a default model, by determining the reduction in SSQ: <span class="math display">\[ r^2 = 1- \frac{\sum (y-\hat{y})^2}{\sum (y-\bar{y})^2 }.\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Gssq <span class="ot">&lt;-</span> <span class="cf">function</span>(par, xy){</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> xy[,<span class="dv">1</span>]; y<span class="ot">&lt;-</span>  xy[,<span class="dv">2</span>];</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x <span class="ot">&lt;-</span> xy[,<span class="dv">1</span>]; y <span class="ot">&lt;-</span>  xy[,<span class="dv">2</span>];</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> par[<span class="dv">1</span>]; mu <span class="ot">&lt;-</span> par[<span class="dv">2</span>]; sigma <span class="ot">&lt;-</span> par[<span class="dv">3</span>];</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    ybar <span class="ot">&lt;-</span> eta <span class="sc">*</span> <span class="fu">dnorm</span>(x,mu,sigma)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (y<span class="sc">-</span>ybar)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    yhat <span class="ot">&lt;-</span> eta <span class="sc">*</span> <span class="fu">dnorm</span>(x,mu,sigma) <span class="co"># make the prediction</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (y<span class="sc">-</span>yhat)<span class="sc">^</span><span class="dv">2</span>)   <span class="co"># to be minimized</span></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ssq)</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(<span class="fl">12.5</span>, <span class="dv">0</span>, <span class="dv">5</span>), Gssq, <span class="at">xy=</span>xa )</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; pr <span class="ot">=</span> <span class="fu">round</span>(par,<span class="dv">2</span>)</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (xa[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co"># sum of y minus y-hat, squared</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">round</span> (<span class="dv">1</span><span class="sc">-</span> Gfit<span class="sc">$</span>value<span class="sc">/</span>SSQ, <span class="dv">2</span>) <span class="co"># Gfit$value is SSQ fitted. </span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'r^2 = '</span>, r2, <span class="st">', eta = '</span>,pr[<span class="dv">1</span>], <span class="st">', mu = '</span>,pr[<span class="dv">2</span>],</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">', sigma = '</span>, pr[<span class="dv">3</span>], <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>r<span class="sc">^</span><span class="dv">2</span> <span class="ot">=</span> <span class="fl">0.94</span>, eta <span class="ot">=</span> <span class="fl">11.02</span>, mu <span class="ot">=</span> <span class="fl">0.05</span>, sigma <span class="ot">=</span> <span class="fl">4.29</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># starting guess for the search: eta=12.5, mu=0, sigma=5</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(<span class="at">par=</span><span class="fu">c</span>(<span class="fl">12.5</span>, <span class="dv">0</span>, <span class="dv">5</span>), Gssq, <span class="at">xy=</span>xa )</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># pull out the fitted parameters</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; pr <span class="ot">=</span> <span class="fu">round</span>(par,<span class="dv">2</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Gfit$value is SSQ: fitted to observed. Get SSQ: mean to obs.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (xa[,<span class="dv">2</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co">#  y minus mean(y)</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">round</span> (<span class="dv">1</span><span class="sc">-</span> Gfit<span class="sc">$</span>value<span class="sc">/</span>SSQ, <span class="dv">2</span>) <span class="co"># percent reduction in SSQ</span></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">'r^2 = '</span>, r2, <span class="st">', eta = '</span>,pr[<span class="dv">1</span>], <span class="st">', mu = '</span>,pr[<span class="dv">2</span>],</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">', sigma = '</span>, pr[<span class="dv">3</span>], <span class="st">'</span><span class="sc">\n</span><span class="st">'</span>, <span class="at">sep=</span><span class="st">''</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a><span class="ot">-&gt;</span>  r<span class="sc">^</span><span class="dv">2</span> <span class="ot">=</span> <span class="fl">0.94</span>, eta <span class="ot">=</span> <span class="fl">11.02</span>, mu <span class="ot">=</span> <span class="fl">0.05</span>, sigma <span class="ot">=</span> <span class="fl">4.29</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The result provides <span class="math inline">\(\sigma \approx 4.3\)</span> which is a more narrow spread than noticing the inflection point in the Gaussian, at <span class="math inline">\((1 ~\sigma),\)</span> was about <span class="math inline">\(\pm5\)</span> from the mean. The fitted maximum will necessarily be close to 1 because of our scaling, but in this case greater than 1, given <span class="math inline">\(\sigma / 0.4 = 10.72\)</span> but <span class="math inline">\(\eta = 11.2,\)</span> due to our rough scaling.</p>
 <p>The fitted line is compared visually to the data by the following chunk. A smooth Gaussian curve is plotted by estimating a value for 18 days before and after the mean day.</p>
@@ -513,48 +514,66 @@ div.csl-indent {
 </section>
 <section id="year-effects" class="level2">
 <h2 class="anchored" data-anchor-id="year-effects">Year Effects</h2>
-<p>The preceding identified the overall pattern as Gaussian with <span class="math inline">\(\sigma \approx 4.3.\)</span> If <span class="math inline">\(\sigma\)</span> is assumed to be constant across years, as <a href="#fig-norm">Figure&nbsp;5</a> suggests, then only two observations per year are required to estimate total abundance: <span class="math inline">\(\eta_t,~ \mu_t.\)</span> To clarify: a single observation of early and small abundance cannot distinguish a small run with average timing from a big run that is late; one subsequent observation can (in theory).</p>
-<p>This test dataset has 5 or 6 observations per year, so precision is improved and over-fitting is reduced compared to (a) fitting 3 parameters to each year separately, or (b) interpolating a trapezoid that includes arbitrarily placed zeros.</p>
-<p>The next step estimates 8 parameters for year effects: <span class="math inline">\(\eta\)</span> (abundance) and <span class="math inline">\(\mu\)</span> (timing) for each of 4 years, and 1 estimate for <span class="math inline">\(\sigma\)</span> (spread) from 21 observations. The ratio of <span class="math inline">\(2.\bar{3}\)</span> data points to parameters might be improved by adding more years: 20 years @ 5 surveys/year would be <span class="math inline">\(11.\bar{1}.\)</span></p>
+<p>The preceding identified the overall pattern as Gaussian with <span class="math inline">\(\sigma \approx 4.3.\)</span> If <span class="math inline">\(\sigma\)</span> is assumed to be known and constant across years, as <a href="#fig-norm">Figure&nbsp;5</a> suggests, then only two observations per year are required to estimate total abundance: <span class="math inline">\(\eta_t,~ \mu_t.\)</span> To clarify: a single observation of early and small abundance cannot distinguish a small run with average timing from a big run that is late; one subsequent observation can make that distinction (in theory, if observations precise and salmon behave).</p>
+<p>This test dataset has 5 or 6 observations per year, so precision is improved and over-fitting is reduced compared to (a) fitting 3 parameters to each year separately, or (b) interpolating to an aribitrary trapezoid that requires arbitrarily placed zeros.</p>
+<p>The next step estimates 2 parameters for year effects: <span class="math inline">\(\eta_{year}\)</span> (abundance) and <span class="math inline">\(\mu_{year}\)</span> (timing) for each of 4 years, and 1 estimate for <span class="math inline">\(\sigma\)</span> (spread, constant) from 21 observations. This is a ratio of <span class="math inline">\(2.\bar{3}\)</span> data points to parameters, and could be improved by adding more years: for 20 years @ 5 surveys/year the ratio would be <span class="math inline">\(11.\bar{1}.\)</span></p>
 <p><span class="math display">\[\hat{y}_{day, year} = \eta_{year} ~ \textbf{G}(x_{year},\mu_{year},\sigma)\]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>GssqAll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, dat){</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dat columns: year, day, count</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># par is 9 parameters</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]; <span class="co"># abundance each year, length 4</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>]; <span class="co"># timing  each year, length 4</span></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    sigma <span class="ot">&lt;-</span> par[<span class="dv">9</span>]; <span class="co"># spread every yearr, length 1</span></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    years <span class="ot">=</span> <span class="fu">unique</span>(dat[,<span class="dv">1</span>]) <span class="co"># 1996 to 1999</span></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    ybar <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(dat[,<span class="dv">1</span>])) <span class="co"># the predicted, length 21</span></span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    m <span class="ot">=</span> <span class="dv">0</span>  <span class="co"># starting index for output vector ybar</span></span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(years)) {  <span class="co"># 4 years: 1996 to 1999</span></span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> years[j]) <span class="co"># find rows in dat for each year</span></span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> (i <span class="cf">in</span> k){ <span class="co"># each observed day in that year</span></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>            m <span class="ot">&lt;-</span> m<span class="sc">+</span><span class="dv">1</span> <span class="co"># advance index for output</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>            ybar[m]  <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[m,<span class="dv">2</span>],mu[j],sigma)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>            <span class="co"># predicted: abundance times normal(day, timing, spread)</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>]<span class="sc">-</span>ybar)<span class="sc">^</span><span class="dv">2</span>) <span class="co"># result of trial values for par</span></span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ssq)</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a><span class="co"># par is total abundance 4 years:eta; timing 4 years: mu, and </span></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a><span class="co"># spread for all years: sigma. total 9 parameters.</span></span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>par <span class="ot">&lt;-</span>  <span class="fu">numeric</span>(<span class="dv">9</span>)</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># starting guess for search is eta = 2 * sigma * max, mu = 15, sigma=4</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a><span class="co"># max for each year is from observed counts.</span></span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">11000</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">700</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>)</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co">#  result: 94600 35260  6020 35260</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a><span class="co">#  start for yearly timing (mu) is day of observed maximum</span></span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">19</span>,<span class="dv">15</span>)</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># start for spread, sigma, is from preceding fit.</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fl">4.3</span></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a><span class="co"># the required precision of fit, reltol, is reduced from the default.</span></span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(par, GssqAll, <span class="at">dat=</span>dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], <span class="at">control=</span><span class="fu">list</span>(<span class="at">reltol=</span><span class="fl">0.01</span>) )</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; <span class="co"># fitted parameters</span></span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>pr <span class="ot">=</span> <span class="fu">round</span>(par, <span class="dv">2</span>) <span class="co"># rounded for printing.</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span> (<span class="at">Year=</span><span class="dv">1996</span><span class="sc">:</span><span class="dv">1999</span>,<span class="at">eta=</span>pr[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],<span class="at">mu=</span>pr[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">sigma=</span>pr[<span class="dv">9</span>])</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># GssqAll &lt;- function(par, dat){</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co">#     # dat columns: year, day, count</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co">#     # par is 9 parameters</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     eta &lt;- par[1:4]; # abundance each year, length 4</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="co">#     mu &lt;- par[5:8]; # timing  each year, length 4</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co">#     sigma &lt;- par[9]; # spread every yearr, length 1</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co">#     years = unique(dat[,1]) # 1996 to 1999</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co">#     ybar &lt;- numeric(length(dat[,1])) # the predicted, length 21</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="co">#     m = 0  # starting index for output vector ybar</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="co">#     for (j in 1:length(years)) {  # 4 years: 1996 to 1999</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="co">#         k &lt;- which(dat[,1] == years[j]) # find rows in dat for each year</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co">#         for (i in k){ # each observed day in that year</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co">#             m &lt;- m+1 # advance index for output</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="co">#             ybar[m]  &lt;- eta[j] * dnorm(dat[m,2],mu[j],sigma)</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a><span class="co">#             # predicted: abundance times normal(day, timing, spread)</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co">#         }</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a><span class="co">#     }</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a><span class="co">#     ssq &lt;- sum( (dat[,3]-ybar)^2) # result of trial values for par</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co">#     return(ssq)</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>GssqAll <span class="ot">&lt;-</span> <span class="cf">function</span>(par, dat){</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dat columns: year, day, count</span></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># par is 9 parameters</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    eta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>]; <span class="co"># abundance each year, length 4</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    mu <span class="ot">&lt;-</span> par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>]; <span class="co"># timing  each year, length 4</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>    sigma <span class="ot">&lt;-</span> par[<span class="dv">9</span>]; <span class="co"># spread every yearr, length 1</span></span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    years <span class="ot">=</span> <span class="fu">unique</span>(dat[,<span class="dv">1</span>]) <span class="co"># 1996 to 1999</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    ybar <span class="ot">&lt;-</span> <span class="fu">numeric</span>(<span class="fu">length</span>(dat[,<span class="dv">1</span>])) <span class="co"># the predicted, length 21</span></span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(years)) {  <span class="co"># 4 years: 1996 to 1999</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> years[j]) <span class="co"># find rows in dat for each year</span></span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>        ybar[k]  <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[k,<span class="dv">2</span>],mu[j],sigma) <span class="co"># all of k</span></span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># predicted: abundance times normal(day, timing, spread)</span></span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    ssq <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>]<span class="sc">-</span>ybar)<span class="sc">^</span><span class="dv">2</span>) <span class="co"># result of trial values for par</span></span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(ssq)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co"># par is eta(4),  mu (4), sigma (1)</span></span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>par <span class="ot">&lt;-</span>  <span class="fu">numeric</span>(<span class="dv">9</span>)</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a><span class="co"># starting guess for search is eta = 2*sigma*max.</span></span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a><span class="co"># where max is max observed count in each year.</span></span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">11000</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">700</span>, <span class="dv">2</span><span class="sc">*</span><span class="fl">4.3</span><span class="sc">*</span><span class="dv">4100</span>)</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a><span class="co">#  result: 94600 35260  6020 35260</span></span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="co">#  start for yearly timing (mu) is day of observed maximum each year</span></span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">19</span>,<span class="dv">15</span>)</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># start for spread, sigma, is from preceding fit.</span></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>par[<span class="dv">9</span>] <span class="ot">&lt;-</span> <span class="fl">4.3</span></span>
+<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a><span class="co"># the required precision of fit, reltol, is reduced from the default.</span></span>
+<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a>control <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">reltol=</span><span class="fl">0.01</span>)</span>
+<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a>Gfit <span class="ot">&lt;-</span> <span class="fu">optim</span>(par, GssqAll, <span class="at">dat=</span>dat[,<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>], control )</span>
+<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>par <span class="ot">=</span> Gfit<span class="sc">$</span>par; <span class="co"># 9 fitted parameters</span></span>
+<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>pr[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>] <span class="ot">=</span> <span class="fu">round</span>(par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>], <span class="dv">0</span>) <span class="co"># rounded for printing.</span></span>
+<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a>pr[<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>] <span class="ot">=</span> <span class="fu">round</span>(par[<span class="dv">5</span><span class="sc">:</span><span class="dv">9</span>], <span class="dv">2</span>) </span>
+<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span> (<span class="at">Year=</span><span class="dv">1996</span><span class="sc">:</span><span class="dv">1999</span>,<span class="at">eta=</span>pr[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>],<span class="at">mu=</span>pr[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>], <span class="at">sigma=</span>pr[<span class="dv">9</span>])</span>
+<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -569,55 +588,55 @@ div.csl-indent {
 <tbody>
   <tr>
    <td style="text-align:right;"> 1996 </td>
-   <td style="text-align:right;"> 99332.56 </td>
-   <td style="text-align:right;"> 13.23 </td>
-   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 99334 </td>
+   <td style="text-align:right;"> 13.22 </td>
+   <td style="text-align:right;"> 3.72 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1997 </td>
-   <td style="text-align:right;"> 39586.25 </td>
-   <td style="text-align:right;"> 13.62 </td>
-   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 39584 </td>
+   <td style="text-align:right;"> 13.82 </td>
+   <td style="text-align:right;"> 3.72 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1998 </td>
-   <td style="text-align:right;"> 6020.14 </td>
-   <td style="text-align:right;"> 19.87 </td>
-   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 6024 </td>
+   <td style="text-align:right;"> 19.32 </td>
+   <td style="text-align:right;"> 3.72 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1999 </td>
-   <td style="text-align:right;"> 35661.50 </td>
-   <td style="text-align:right;"> 13.31 </td>
-   <td style="text-align:right;"> 3.69 </td>
+   <td style="text-align:right;"> 35662 </td>
+   <td style="text-align:right;"> 13.20 </td>
+   <td style="text-align:right;"> 3.72 </td>
   </tr>
 </tbody>
 </table>
 
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r^2 for overall fit</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co"># SSQ from mean (dumb)</span></span>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># r^2 for overall fit, all 4 years at once.</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>SSQ <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(xa[,<span class="dv">2</span>]))<span class="sc">^</span><span class="dv">2</span> ) <span class="co"># SSQ from mean</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>r2  <span class="ot">&lt;-</span>  <span class="dv">1</span><span class="sc">-</span> Gfit<span class="sc">$</span>value <span class="sc">/</span> SSQ</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co"># print(paste(' r^2 =', round (r2,2) ))</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>r2  <span class="ot">&lt;-</span> <span class="dv">100</span><span class="sc">*</span><span class="fu">round</span> (r2,<span class="dv">2</span>) <span class="co"># as percent</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># print( paste('r^2 = ', r2,'%', sep='') ) # save for text</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The resulting fit, with <span class="math inline">\(r^2 =\)</span> 0.99, minimizes SSQ over all years, despite large differences in abundance between years. Perhaps large abundances have a larger effect on the fit than small. To investigate, we determine the fit for each year as separate <span class="math inline">\(r^2\)</span> values.</p>
+<p>The resulting fit, with <span class="math inline">\(r^2 =\)</span> 99%, minimizes SSQ over all years, despite large differences in abundance within and between years. Perhaps large abundances have a larger effect than small on the fit determined by SSQ. To investigate, determine the fit for each year as separate <span class="math inline">\(r^2\)</span> values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>eta <span class="ot">&lt;-</span> par[<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>];  mu <span class="ot">&lt;-</span> par[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>]; sigma <span class="ot">&lt;-</span> par[<span class="dv">9</span>]; </span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>year <span class="ot">&lt;-</span> <span class="fu">unique</span>(dat[,<span class="dv">1</span>]) <span class="co"># 1996 to 1999</span></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>nyear <span class="ot">&lt;-</span> <span class="fu">length</span>(year)   <span class="co">#4 </span></span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>yhat <span class="ot">&lt;-</span> <span class="cn">NULL</span> <span class="co"># will be 21 predicted </span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    r2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nyear)</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nyear) {</span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> year[j]) <span class="co"># index for rows for this year</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        predicted <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[k,<span class="dv">2</span>], mu[j], sigma) <span class="co"># a vector</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        <span class="co"># dat[,2] is day. dat[,3] is count</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        ssq_fit <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> predicted      )<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>        ssq_raw <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(dat[k,<span class="dv">3</span>]) )<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        r2[j] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ssq_fit <span class="sc">/</span> ssq_raw</span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        yhat <span class="ot">&lt;-</span> <span class="fu">c</span>(yhat, predicted) <span class="co"># accumulate and save predicted</span></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Year=</span>year, <span class="at">Abundance =</span>eta, <span class="at">r2=</span><span class="fu">round</span>(r2,<span class="dv">2</span>) )</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(nyear)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>nyear) {</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    k <span class="ot">&lt;-</span> <span class="fu">which</span>(dat[,<span class="dv">1</span>] <span class="sc">==</span> year[j]) <span class="co"># index for rows for this year</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    yhat[k] <span class="ot">&lt;-</span> eta[j] <span class="sc">*</span> <span class="fu">dnorm</span>(dat[k,<span class="dv">2</span>], mu[j], sigma) <span class="co"># a vector</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># dat[,2] is day. dat[,3] is count</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    ssq_fit <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> yhat[k])<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    ssq_raw <span class="ot">&lt;-</span> <span class="fu">sum</span>( (dat[k,<span class="dv">3</span>] <span class="sc">-</span> <span class="fu">mean</span>(dat[k,<span class="dv">3</span>]) )<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>    r2[j] <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ssq_fit <span class="sc">/</span> ssq_raw</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Year=</span>year, <span class="at">Abundance=</span><span class="fu">round</span>(eta,<span class="dv">0</span>), <span class="at">r2=</span><span class="fu">round</span>(r2,<span class="dv">2</span>) ) </span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -631,22 +650,22 @@ div.csl-indent {
 <tbody>
   <tr>
    <td style="text-align:right;"> 1996 </td>
-   <td style="text-align:right;"> 99332.558 </td>
+   <td style="text-align:right;"> 99334 </td>
    <td style="text-align:right;"> 0.99 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1997 </td>
-   <td style="text-align:right;"> 39586.251 </td>
-   <td style="text-align:right;"> 0.80 </td>
+   <td style="text-align:right;"> 39584 </td>
+   <td style="text-align:right;"> 0.81 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1998 </td>
-   <td style="text-align:right;"> 6020.138 </td>
-   <td style="text-align:right;"> 0.80 </td>
+   <td style="text-align:right;"> 6024 </td>
+   <td style="text-align:right;"> 0.82 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1999 </td>
-   <td style="text-align:right;"> 35661.500 </td>
+   <td style="text-align:right;"> 35662 </td>
    <td style="text-align:right;"> 0.93 </td>
   </tr>
 </tbody>
@@ -656,10 +675,9 @@ div.csl-indent {
 </div>
 <p>Compare the estimates of “fish days” from trapezoidal AUC and from fitting Gaussian distributions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Year=</span>year, <span class="at">Abundance =</span> <span class="fu">round</span>(eta,<span class="dv">0</span>),</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">AUC =</span> <span class="fu">c</span>(<span class="dv">101211</span>, <span class="dv">56010</span>, <span class="dv">9847</span>,<span class="dv">45263</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>a[,<span class="st">"Difference(%)"</span>] <span class="ot">&lt;-</span> <span class="fu">round</span>( <span class="dv">100</span><span class="sc">*</span>(a<span class="sc">$</span>AUC<span class="sc">-</span>a<span class="sc">$</span>Abundance)<span class="sc">/</span>a<span class="sc">$</span>Abundance, <span class="dv">2</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>a<span class="sc">$</span>AUC <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">101211</span>, <span class="dv">56010</span>, <span class="dv">9847</span>,<span class="dv">45263</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>a<span class="sc">$</span>PercentDiff <span class="ot">&lt;-</span> <span class="fu">round</span>( <span class="dv">100</span><span class="sc">*</span>(a<span class="sc">$</span>AUC<span class="sc">-</span>a<span class="sc">$</span>Abundance)<span class="sc">/</span>a<span class="sc">$</span>Abundance, <span class="dv">2</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">kbl</span>(a)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -667,40 +685,45 @@ div.csl-indent {
   <tr>
    <th style="text-align:right;"> Year </th>
    <th style="text-align:right;"> Abundance </th>
+   <th style="text-align:right;"> r2 </th>
    <th style="text-align:right;"> AUC </th>
-   <th style="text-align:right;"> Difference(%) </th>
+   <th style="text-align:right;"> PercentDiff </th>
   </tr>
  </thead>
 <tbody>
   <tr>
    <td style="text-align:right;"> 1996 </td>
-   <td style="text-align:right;"> 99333 </td>
+   <td style="text-align:right;"> 99334 </td>
+   <td style="text-align:right;"> 0.99 </td>
    <td style="text-align:right;"> 101211 </td>
    <td style="text-align:right;"> 1.89 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1997 </td>
-   <td style="text-align:right;"> 39586 </td>
+   <td style="text-align:right;"> 39584 </td>
+   <td style="text-align:right;"> 0.81 </td>
    <td style="text-align:right;"> 56010 </td>
-   <td style="text-align:right;"> 41.49 </td>
+   <td style="text-align:right;"> 41.50 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1998 </td>
-   <td style="text-align:right;"> 6020 </td>
+   <td style="text-align:right;"> 6024 </td>
+   <td style="text-align:right;"> 0.82 </td>
    <td style="text-align:right;"> 9847 </td>
-   <td style="text-align:right;"> 63.57 </td>
+   <td style="text-align:right;"> 63.46 </td>
   </tr>
   <tr>
    <td style="text-align:right;"> 1999 </td>
-   <td style="text-align:right;"> 35661 </td>
+   <td style="text-align:right;"> 35662 </td>
+   <td style="text-align:right;"> 0.93 </td>
    <td style="text-align:right;"> 45263 </td>
-   <td style="text-align:right;"> 26.93 </td>
+   <td style="text-align:right;"> 26.92 </td>
   </tr>
 </tbody>
 </table>
 
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(a<span class="sc">$</span>Difference)),<span class="dv">0</span>)</span>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="ot">&lt;-</span> <span class="fu">round</span>(<span class="fu">mean</span>(<span class="fu">abs</span>(a<span class="sc">$</span>PercentDiff)),<span class="dv">0</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">#print( paste('The mean difference is ', a1, '%.',sep='' )) </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The mean difference in annual estimates of <em>fish days</em> is 33%.’</p>
@@ -760,10 +783,10 @@ div.csl-indent {
 </ol>
 <p>But there is a tendency for</p>
 <ol type="1">
-<li><p>larger abundances to have better fit (<span class="math inline">\(r^2\)</span> by year), suggesting that large observations have a bigger effect than small;</p></li>
-<li><p>and years with the largest difference between Gaussian and AUC have lower fit.</p></li>
+<li><p>larger abundances to have better fit (<span class="math inline">\(r^2\)</span> by year), suggesting that large observations have a bigger effect than small; and</p></li>
+<li><p>years with the largest difference between Gaussian and AUC have lower fit.</p></li>
 </ol>
-<p>The range of observations, from 15 to 11,000, suggests that the sampling error, the precision of observations, is proportional to the observation, as in <span class="math inline">\(\pm 20 \%,\)</span> as opposed to a fixed error, as in <span class="math inline">\(\sigma=20\)</span> <em>fish.</em> Ordinary linear regression assumes fixed error, and the non-linear fitting mimics that. Proportional sampling error, so the error is essentially a multiplier, implies the fit should be to log abundances, so that the log (error) is additive.</p>
+<p>The range of observations, from 15 to 11,000, suggests that the sampling error, the precision of observations, is proportional to the observation, as in <span class="math inline">\(\pm 20 \%,\)</span> as opposed to a fixed error, as in <span class="math inline">\(\sigma=20\)</span> <em>fish.</em> Ordinary linear regression assumes fixed error, and the non-linear fitting mimics that. Proportional sampling error, where the error is essentially a multiplier, implies the fit should be to log abundances, so that log(error) is additive.</p>
 <section id="next-step" class="level2">
 <h2 class="anchored" data-anchor-id="next-step">Next Step</h2>
 <p>Saved for a subsequent post: Determine how to fit the log of the Gaussian to the log of the counts. I discovered a mathematical <strong>trick</strong> that makes this simple.</p>

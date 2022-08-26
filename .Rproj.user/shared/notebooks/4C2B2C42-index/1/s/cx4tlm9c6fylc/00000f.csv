@@ -1,0 +1,3 @@
+"0","a$AUC <- c(101211, 56010, 9847,45263)"
+"0","a$PercentDiff <- round( 100*(a$AUC-a$Abundance)/a$Abundance, 2)"
+"0","kbl(a)"

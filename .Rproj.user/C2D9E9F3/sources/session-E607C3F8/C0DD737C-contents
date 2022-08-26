@@ -3,21 +3,16 @@ title: "Context! What's Happening?"
 author: "Scott Akenhead"
 date: "2022-08-22"
 categories: [news]
-image: "image.jpg"
+image: "Scott_2022-03-18.png"
 ---
 
-This is a post with executable code.
+This is me: [ORCID:0000-0003-1218-3118](https://orcid.org/0000-0003-1218-3118). The last decade was a return to my roots as a marine fisheries ecologist, working with scientists at the Pacific Biological Station. This blog revisits and updates analyses, as examples that might be helpful to *ecological detectives* trying to solve salmon mysteries.
 
-```{r}
-x <- 1 + 1
-cat('x =', x, '\n')
+Salmon are declining almost everywhere, northern populations in Alaska and Labrador being exceptions this generalization. After \>30 years of losses and declines we know this is about marine survival declining from \~10% (survival of smolts leaving freshwater) to \~1%, but we do not know why. Marine survival is failing in pristine watersheds as well as industrialized watersheds such as the Columbia River. What, exactly, are humans doing wrong to have such a massive and widespread effect? Pollution? Global warming? Hatcheries?
+
+Recently involved with [IYS](yearofthesalmon.org) and [LSF](https://missingsalmonalliance.org/likely-suspects-framework-home) and with Salmon Data Mobilization (paper in prep) as means to new salmon analyses and models. Maybe we should be throwing this problem out to a wider community of analysts and coders. How, though? Seems unlikely that blogging will help, but let's see.
+
+```{}
 ```
 
-[![This is the caption to the figure. The figure is a link.](image.jpg){fig-alt="it was image.jpg"}](https://quarto.org/docs/websites/website-blog.html)
-
-I put a pencil in my hair.\
-It fell to earth I know not where.\
-I put a pencil, yea, chest high,\
-I haven't see it since July. \
-I ask you, what do you think of that? \
-I guess it proves I'm bald and fat.
+[![Spawning Sockeye Salmon spawning in just the right gravel after migrating thousands of kilometer to distant seas and back to the river they were born in.](Sockeye_female_Eiko_Jones_WSP_2018.png){fig-alt="Eiko Jones in WSP 2018"}](https://quarto.org/docs/websites/website-blog.html)

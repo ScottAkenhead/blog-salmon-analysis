@@ -1,0 +1,4 @@
+"0","for (j in 1:4){"
+"0","    y  <- eta[j] * dnorm(x, mu[j], sigma) # smooth curve"
+"0","    lines(1e-3*y ~ x)"
+"0","}"
