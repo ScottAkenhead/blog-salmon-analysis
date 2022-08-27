@@ -3,7 +3,7 @@
     "path": "~/Documents/Projects/blog salmon analysis/posts/welcome/index.qmd",
     "project_path": "posts/welcome/index.qmd",
     "type": "quarto_markdown",
-    "hash": "4182487230",
+    "hash": "0",
     "contents": "",
     "dirty": false,
     "created": 1661474390586.0,
@@ -18,7 +18,7 @@
         "rmdVisualCollapsedChunks": "",
         "rmdVisualModeLocation": "1042:762",
         "cursorPosition": "35,91",
-        "scrollLine": "34"
+        "scrollLine": "32"
     },
     "folds": "",
     "lastKnownWriteTime": 1661481280,

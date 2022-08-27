@@ -1,14 +1,14 @@
 {
-    "id": "551DDB80",
-    "path": "~/Documents/Projects/blog salmon analysis/about.qmd",
-    "project_path": "about.qmd",
+    "id": "E67E777B",
+    "path": "~/Documents/Projects/blog salmon analysis/posts/post-with-code/index.qmd",
+    "project_path": "posts/post-with-code/index.qmd",
     "type": "quarto_markdown",
-    "hash": "3093003356",
+    "hash": "1910030838",
     "contents": "",
     "dirty": false,
-    "created": 1661557900847.0,
+    "created": 1661474337889.0,
     "source_on_save": false,
-    "relative_order": 4,
+    "relative_order": 1,
     "properties": {
         "rmdVisualMode": "true",
         "rmdVisualWrapConfigured": "true",
@@ -16,16 +16,16 @@
         "Source": "Source",
         "docOutlineVisible": "1",
         "rmdVisualCollapsedChunks": "",
-        "cursorPosition": "0,0",
-        "scrollLine": "0",
-        "rmdVisualModeLocation": "268:82"
+        "rmdVisualModeLocation": "2:0",
+        "cursorPosition": "20,326",
+        "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1661470742,
+    "lastKnownWriteTime": 1661635319,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1661470742,
+    "last_content_update": 1661635319081,
     "read_only": false,
     "read_only_alternatives": []
 }
